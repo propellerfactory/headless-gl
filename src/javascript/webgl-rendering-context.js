@@ -9,6 +9,7 @@ const { getOESTextureFloat } = require('./extensions/oes-texture-float')
 const { getSTACKGLDestroyContext } = require('./extensions/stackgl-destroy-context')
 const { getSTACKGLResizeDrawingBuffer } = require('./extensions/stackgl-resize-drawing-buffer')
 const { getWebGLDrawBuffers } = require('./extensions/webgl-draw-buffers')
+const { getWebGLColorBufferFloat } = require('./extensions/webgl-color-buffer-float')
 const {
   bindPublics,
   checkObject,
@@ -57,7 +58,8 @@ const availableExtensions = {
   oes_standard_derivatives: getOESStandardDerivatives,
   stackgl_destroy_context: getSTACKGLDestroyContext,
   stackgl_resize_drawingbuffer: getSTACKGLResizeDrawingBuffer,
-  webgl_draw_buffers: getWebGLDrawBuffers
+  webgl_draw_buffers: getWebGLDrawBuffers,
+  webgl_color_buffer_float: getWebGLColorBufferFloat
 }
 
 const privateMethods = [
@@ -569,6 +571,19 @@ class WebGLRenderingContext extends NativeWebGLRenderingContext {
       return true
     }
     return false
+  }
+
+  _marshalInternalFormat(type, format) {
+    if (this._extensions.webgl_color_buffer_float && type === gl.FLOAT) {
+      switch (format) {
+        case gl.RGBA:
+          return this._extensions.webgl_color_buffer_float.RGBA32F_EXT
+        default:
+          return this._extensions.webgl_color_buffer_float.RGB32F_EXT
+      }
+    } else {
+      return format
+    }
   }
 
   _resizeDrawingBuffer (width, height) {
@@ -1212,6 +1227,10 @@ class WebGLRenderingContext extends NativeWebGLRenderingContext {
 
     if( supportedExts.indexOf('GL_ANGLE_instanced_arrays') > 0) {
       exts.push('ANGLE_instanced_arrays')
+    }
+
+    if( supportedExts.indexOf('GL_EXT_color_buffer_float') > 0) {
+      exts.push('WEBGL_color_buffer_float')
     }
 
     return exts
@@ -3197,7 +3216,7 @@ class WebGLRenderingContext extends NativeWebGLRenderingContext {
     super.texImage2D(
       target,
       level,
-      internalFormat,
+      this._marshalInternalFormat(type, internalFormat),
       width,
       height,
       border,
