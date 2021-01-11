@@ -166,7 +166,7 @@ The Mesa 3D Graphics Library also supports Wayland or surfaceless platforms.
 
 apt install python3-pip
 pip3 install meson
-pip3 install 
+pip3 install
 https://mesa.freedesktop.org/archive/mesa-20.0.5.tar.xz
 https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-linux.zip
 https://dri.freedesktop.org/libdrm/libdrm-2.4.100.tar.gz
@@ -256,6 +256,7 @@ Only the following for now:
 * [`ANGLE_instanced_arrays`](https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/)
 * [`OES_element_index_uint`](https://www.khronos.org/registry/webgl/extensions/OES_element_index_uint/)
 * [`OES_texture_float`](https://www.khronos.org/registry/webgl/extensions/OES_texture_float/)
+* [`OES_texture_float_linear`](https://www.khronos.org/registry/webgl/extensions/OES_texture_float_linear/)
 * [`WEBGL_draw_buffers`](https://www.khronos.org/registry/webgl/extensions/WEBGL_draw_buffers/)
 
 ### How can I keep up to date with what has changed in headless-gl?
